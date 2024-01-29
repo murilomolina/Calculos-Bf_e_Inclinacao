@@ -25,6 +25,9 @@ class CalculoBF(QWidget):
         calculate_button = QPushButton('Calcular', self)
         calculate_button.clicked.connect(self.calculate)
 
+        clear_button = QPushButton('Limpar Campos', self)
+        clear_button.clicked.connect(self.clear_fields)
+
         layout = QVBoxLayout(self)
         layout.addWidget(self.area_terreno_input)
         layout.addWidget(self.area_computavel_input)
@@ -32,6 +35,7 @@ class CalculoBF(QWidget):
         layout.addWidget(self.zona_input)
         layout.addWidget(calculate_button)
         layout.addWidget(self.result_textedit)
+        layout.addWidget(clear_button)
 
     def calculate(self):
         try:
@@ -60,13 +64,20 @@ class CalculoBF(QWidget):
 
             if cp > coeficiente_basico or cp > coeficiente_projeto:
                 result_text = f'\nRESULTADO OBTIDO:\nR$ {bf:.2f}\n\nCPC = {(cp):.2f}'
-            elif cp < coeficiente_basico or coeficiente_projeto:
+            elif cp < coeficiente_basico or cp < coeficiente_projeto:
                 result_text = f'\nResultado do CP menor que 2.5\nNão é necessário pagar a ODC!\nCPC = {(cp):.2f}'
 
             self.result_textedit.setPlainText(result_text)
 
         except ValueError:
             QMessageBox.warning(self, 'Erro de Entrada', 'Por favor, insira valores válidos nos campos.')
+
+    def clear_fields(self):
+        self.area_terreno_input.clear()
+        self.area_computavel_input.clear()
+        self.valor_referencia_input.clear()
+        self.zona_input.clear()
+        self.result_textedit.clear()
 
 
 if __name__ == '__main__':
